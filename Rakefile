@@ -5,7 +5,7 @@ PUPPET_OPTIONS='--verbose --detailed-exitcodes'
 def puppet(manifest_file)
   fail "No such manifest '#{manifest_file}'!" unless File.exist? manifest_file
   sh "puppet apply --modulepath='#{MODULES_PATH}' #{PUPPET_OPTIONS} '#{MANIFESTS_PATH}/#{manifest_file}'" do |ok, res|
-    fail "Apply of manifest '#{manifest_file}' failed with exit code #{res.exitstatus}!" if [4.6].include? res.exitstatus
+    fail "Apply of manifest '#{manifest_file}' failed with exit code #{res.exitstatus}!" unless [0,2].include? res.exitstatus
   end
 end
 
@@ -26,9 +26,13 @@ def component(component_name)
     end
     task :apply do
       puppet "#{component_name}.pp"
+      puts "#{component_name} have been applied!"
+      sleep(3)
     end
     task :test do
       rspec "spec/#{component_name}_spec.rb"
+      puts "#{component_name} have been tested!"
+      sleep(3)
     end
   end
   desc "#{component_name} component"

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe package('ntp1') do
+describe package('ntp') do
   it { should be_installed }
 end
 
