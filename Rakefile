@@ -54,15 +54,15 @@ component('swift-storage')
 
 namespace :deploy do
   desc "Deploy storage node"
-  task :storage => ['network', 'basic', 'swift-loopback', 'swift-storage'] do
+  task :storage => ['network', 'basic', 'swift-install', 'swift-loopback', 'swift-storage'] do
     puts "Storage deployed!"
   end
   desc "Deploy proxy node"
-  task :proxy => ['network', 'basic', 'swift-ring-create', 'swift-proxy'] do
+  task :proxy => ['network', 'basic', 'swift-install', 'swift-ring-create', 'swift-proxy'] do
     puts "Proxy deployed!"
   end
   desc "Deploy all in one node"
-  task :saio => ['network', 'basic', 'swift-ring-create', 'swift-storage', 'swift-proxy'] do
+  task :saio => ['network', 'basic', 'swift-install', 'swift-loopback', 'swift-ring-create', 'swift-storage', 'swift-proxy'] do
     puts "SAIO deployed!"
   end
 end
