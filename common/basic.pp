@@ -6,10 +6,6 @@ class { 'openstack::clocksync':
 
 include ssh
 
-class { 'openstack::mirantis_repos':
-  type=>'default',
-}
-
 sysctl::value { 'net.ipv4.conf.all.rp_filter':
   value => '0',
 }
@@ -24,3 +20,13 @@ package { 'serverspec':
 }
 
 Package['rubygems'] -> Package['serverspec']
+
+if $::operatingsystem == 'Ubuntu' {
+  class { 'openstack::apparmor::disable' :}
+}
+
+#if $::osfamily == 'RedHat' {
+#  class { 'selinux':
+#    mode => 'disabled',
+#  }
+#}
