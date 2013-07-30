@@ -1,11 +1,8 @@
-import 'all_components.rake'
+import 'components.rake'
 
-task :default do
-  system("rake -sT")
-end
 
 def deploy(name, stages)
-desc "Deploy #{name}"
+  desc "Deploy #{name}"
   task "deploy/#{name}" do
     if stages.respond_to?(:each)
   	  stages.each do |stage|
@@ -16,23 +13,30 @@ desc "Deploy #{name}"
   end
 end
 
+task :default do
+  system("rake -sT")
+end
 
-deploy :common, [
+################################
+
+sanity_stages = [
   'common/supported',
   'common/role',
-  #'common/network',
-  #'common/firewall',
-  'common/repos',
-  'common/basic',
 ]
 
-deploy :controller, [
-  'common/supported',
-  'common/role',
-  #'common/network',
-  #'common/firewall',
+network_stages = [
+  'common/network',
+#  'common/firewall',
+]
+  
+common_stages = sanity_stages + [
   'common/repos',
   'common/basic',
+  'common/profile',
+  'common/trace',
+]
+
+controller_stages = common_stages + network_stages + [
   'controller/controller',
   'controller/auth_file',
   'controller/cirros',
@@ -40,3 +44,13 @@ deploy :controller, [
   'controller/tinyproxy',
   'controller/floating',
 ]
+
+compute_stages = common_stages + [
+  'compute/compute',
+  'compute/rsyslog',
+]
+
+################################
+
+deploy :common, common_stages
+deploy :controller, controller_stages

@@ -1,3 +1,3 @@
-import 'config.pp'
+import '../config.pp'
 
 class {'osnailyfacter::tinyproxy': }

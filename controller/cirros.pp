@@ -1,4 +1,4 @@
-import 'config.pp'
+import '../config.pp'
 
 class { 'openstack::img::cirros':
   os_username               => shellescape($access_hash[user]),

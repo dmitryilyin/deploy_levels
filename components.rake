@@ -2,8 +2,12 @@ require 'find'
 
 TESTS_DIR = File.dirname(File.expand_path(__FILE__))
 SPEC_DIR = File.expand_path(TESTS_DIR + '/spec')
-#PUPPET_OPTIONS = "--detailed-exitcodes --verbose --debug --trace --evaltrace"
-PUPPET_OPTIONS = "--detailed-exitcodes"
+
+puppet_options = "--detailed-exitcodes"
+puppet_options += " --verbose --debug --trace --evaltrace" if ENV['puppet_debug']
+puppet_options += " --noop" if ENV['puppet_noop']
+
+PUPPET_OPTIONS = puppet_options
 RSPEC_OPTIONS = "--color -f doc"
 
 def puppet(manifest_file)
@@ -26,7 +30,6 @@ end
 
 Dir.chdir(TESTS_DIR) || exit(1)
 
-all_tasks = []
 Find.find('.') do |path|
   next unless File.file?(path)
   next unless path.end_with?('.pp')
@@ -50,5 +53,4 @@ Find.find('.') do |path|
     Rake::Task["#{test_name}:apply"].invoke
     Rake::Task["#{test_name}:test"].invoke
   end
-  all_tasks.push(test_name)
 end

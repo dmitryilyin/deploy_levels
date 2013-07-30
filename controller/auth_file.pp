@@ -1,4 +1,4 @@
-import 'config.pp'
+import '../config.pp'
 
 class { 'openstack::auth_file':
   admin_user           => $access_hash[user],
