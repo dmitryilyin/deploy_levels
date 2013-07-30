@@ -44,7 +44,7 @@ Find.find('.') do |path|
       rspec(test_name)
       puts "#{test_name} have been tested!"
     end
-    desc "#{test_name} integration test"
+    desc "#{test_name} deployment stage"
   end
   task test_name do
     Rake::Task["#{test_name}:apply"].invoke

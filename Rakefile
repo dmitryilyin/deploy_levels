@@ -1,13 +1,23 @@
 import 'all_components.rake'
 
 task :default do
-  system("rake -sT")  # s for silent
+  system("rake -sT")
 end
 
-namespace :deploy do
-  desc "Deploy Controller"
-  task :controller do
-    stages = [
+def deploy(name, stages)
+desc "Deploy #{name}"
+  task "deploy/#{name}" do
+    if stages.respond_to?(:each)
+  	  stages.each do |stage|
+  	    Rake::Task["#{stage}:apply"].invoke
+  	    Rake::Task["#{stage}:test"].invoke
+  	  end
+    end
+  end
+end
+
+
+deploy :controller, [
       'common/supported',
       'common/role',
       #'common/network',
@@ -21,9 +31,3 @@ namespace :deploy do
       'controller/tinyproxy',
       'controller/floating',
     ]
-    stages.each do |stage|
-      Rake::Task["#{stage}:apply"].invoke
-      Rake::Task["#{stage}:test"].invoke
-    end
-  end
-end
