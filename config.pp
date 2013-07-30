@@ -1,3 +1,15 @@
+#Stages configuration
+stage {'first': } ->
+stage {'openstack-custom-repo': } ->
+stage {'netconfig': } ->
+stage {'corosync_setup': } ->
+stage {'cluster_head': } ->
+stage {'openstack-firewall': } -> Stage['main']
+
+stage {'glance-image':
+  require => Stage['main'],
+}
+
 $openstack_version = {
   'keystone'   => 'latest',
   'glance'     => 'latest',
