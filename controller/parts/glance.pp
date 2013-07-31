@@ -1,0 +1,20 @@
+  ######## BEGIN GLANCE ##########
+  class { 'openstack::glance':
+    verbose                   => $verbose,
+    debug                     => $debug,
+    db_type                   => $db_type,
+    db_host                   => $db_host,
+    glance_db_user            => $glance_db_user,
+    glance_db_dbname          => $glance_db_dbname,
+    glance_db_password        => $glance_db_password,
+    glance_user_password      => $glance_user_password,
+    auth_uri                  => "http://${service_endpoint}:5000/",
+    keystone_host             => $service_endpoint,
+    bind_host                 => $api_bind_address,
+    enabled                   => $enabled,
+    glance_backend            => $glance_backend,
+    registry_host             => $service_endpoint,
+    use_syslog                => $use_syslog,
+    syslog_log_facility       => $syslog_log_facility_glance,
+    syslog_log_level          => $syslog_log_level,
+  }
